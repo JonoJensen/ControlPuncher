@@ -8,6 +8,12 @@ ControlPuncher is a watch app that acts as a virtual Orientering Control Punchin
 GPS in the watch and a track uploaded to the watch in advance. The track needs to be preformated
 using a script in this repository before uploading.
 
+![img](readme.png)
+
+A track string may look something like this:
+
+    CUgyMSBTdmFsbAUABQkNEgUCUzEoSV0s4qtODAMxNDYIXF0s1bRODAMxNDJgTl0sUixPDAMxNDlMJl0slhlPDAJNMeI0XSzXok4M7g==
+
 Install ControlPuncher on the watch using ConnectIQ. Once installed the track to use is added to the
 data field in the Garmin Connect app by
 1.  Copy the track string to the clipboard

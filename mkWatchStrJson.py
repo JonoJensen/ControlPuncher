@@ -128,7 +128,7 @@ for c in cList:
     for i in c['ord']:
         pack8(out,
               (i['type'] % 4)
-              + 4 * ( cCtrls[i['i']]['ix'] ))
+              + 4 * ( c['ctrls'][i['i']]['ix'] ))
 
     # Export number of checkpoints
     pack8(out,len(c['ix']))
@@ -136,8 +136,8 @@ for c in cList:
     # Export control points
     for i in c['ix']:
         packStr(out, i[:4])  # Name max 4 chars
-        packAngle(out, cCtrls[i]['lat'])
-        packAngle(out, cCtrls[i]['lon'])
+        packAngle(out, c['ctrls'][i]['lat'])
+        packAngle(out, c['ctrls'][i]['lon'])
 
     # End marker
     pack8(out,0xEE)

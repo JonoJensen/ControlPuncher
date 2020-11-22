@@ -29,6 +29,13 @@ data field in the Garmin Connect app by
 
 After a run has been completed, Leg times are presented as a read only setting.
 
+Building track strings from Livelox
+-----------------------------------
+
+Use this sparcely sinse it's hosted on my private slow 3G modem. Go to my TrackGenerator that fetches
+data using Livelox service on https://helmas.se/ControlPuncher and serch for an event and generate
+a track code for the track you want.
+
 
 Building track strings using this repo
 --------------------------------------

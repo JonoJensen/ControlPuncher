@@ -43,6 +43,8 @@ root      = tree.getroot()
 rcData    = xmlFirst(root, "RaceCourseData")
 rcCtrls   = xmlAll(rcData, "Control")
 rcCourses = xmlAll(rcData, "Course")
+rcCourseAssignments = xmlAll(rcData, "ClassCourseAssignment")
+
 
 #---------------------------------------------------------
 # Controls
@@ -55,6 +57,17 @@ for c in rcCtrls:
     cCtrlsAll[name] = {
         'lat' : Decimal(pos.get('lat').strip()),
         'lon' : Decimal(pos.get('lng').strip()) }
+
+#---------------------------------------------------------
+# Courses
+
+cAssign = {}
+
+for cassign in rcCourseAssignments:
+    className = xmlFirst(cassign, "ClassName").text.strip()
+    courseName = xmlFirst(cassign, "CourseName").text.strip()
+    cl = cAssign[courseName] = cAssign.get(courseName,[]);
+    cl.append(className);
 
 #---------------------------------------------------------
 # Courses
@@ -98,7 +111,10 @@ def packStr(out,s):
         sys.exit("Too long string")
     out[0].append(len(s))
     for c in s:
-        out[0].append(ord(c))
+        cc = ord(c)
+        if cc <	32 or cc > 127:
+            cc = 95 # '_' sym
+        out[0].append(cc)
 
 def pack8(out,b):
     if (b < 0) or (b > 255):
@@ -128,8 +144,8 @@ def packAngle(out, a):
     a /= Decimal(360.0)
     a *= Decimal(math.pow(2,32))
     a += Decimal(0.5)
-    a = math.floor(a)
-    if a == math.pow(2,32):
+    a = int(math.floor(a))
+    if a >= math.pow(2,32):
         a = 0
     pack32(out, a)
 
@@ -166,10 +182,11 @@ for c in cList:
 
     # End marker
     pack8(out,0xEE)
-    outstr = str(base64.b64encode(out[0]),'ascii')
+    outstr = str(base64.b64encode(out[0]))
 
     # Print out
     print("Track: " + c['name'])
+    print("Classes: " + ", ".join(cAssign.get(c['name'],[])))
     print("NumCheck: " + str(len(c['ord'])))
     print("CodeLen: " + str(len(outstr)))
     print("Code: " + outstr)

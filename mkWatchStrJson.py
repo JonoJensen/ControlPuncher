@@ -73,7 +73,10 @@ def packStr(out,s):
         sys.exit("Too long string")
     out[0].append(len(s))
     for c in s:
-        out[0].append(ord(c))
+        cc = ord(c)
+        if cc <	32 or cc > 127:
+            cc = 95 # '_' sym
+        out[0].append(cc)
 
 def pack8(out,b):
     if (b < 0) or (b > 255):
@@ -100,11 +103,11 @@ def packAngle(out, a):
         a += 360.0
     while a >= 360.0:
         a -= 360.0
-    a /= 360.0
-    a *= math.pow(2,32)
-    a += 0.5
-    a = math.floor(a)
-    if a == math.pow(2,32):
+    a /= Decimal(360.0)
+    a *= Decimal(math.pow(2,32))
+    a += Decimal(0.5)
+    a = int(math.floor(a))
+    if a >= math.pow(2,32):
         a = 0
     pack32(out, a)
 
